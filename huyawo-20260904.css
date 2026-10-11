@@ -497,6 +497,7 @@ textarea {
 }
 
 .contact-email {
+  position: relative;
   margin: 34px 0 0;
   font-size: clamp(18px, 2.4vw, 27px);
   font-weight: 700;
@@ -505,12 +506,45 @@ textarea {
 
 .contact-email-pill {
   display: inline-block;
+  max-width: 100%;
   padding: 16px 28px;
+  border: 0;
   border-radius: 999px;
   background: #ffffff;
-  color: var(--blue);
+  color: var(--ink);
+  font: inherit;
   line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
   box-shadow: 0 8px 24px rgba(18, 34, 61, 0.08);
+}
+
+.contact-email-pill:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.contact-email-toast {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 12px);
+  left: 50%;
+  max-width: calc(100vw - 32px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(18, 34, 61, 0.14);
+  transform: translateX(-50%);
+}
+
+.contact-email-toast[hidden] {
+  display: none;
 }
 
 .contact-form {
@@ -1536,5 +1570,40 @@ textarea {
   .pricing-numbers div {
     grid-template-columns: 1fr;
     gap: 5px;
+  }
+}
+
+/* Email copy microinteraction. The confirmation remains visible for two seconds. */
+.contact-email-pill {
+  position: relative;
+  transition: transform 220ms cubic-bezier(.2,.8,.2,1),
+              box-shadow 220ms ease, background-color 220ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.contact-email-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 13px 28px rgba(18,34,61,.14);
+}
+.contact-email-pill:active {
+  transform: translateY(1px) scale(.985);
+}
+.contact-email-pill.is-copied {
+  background-color: #f4faff;
+  box-shadow: 0 0 0 5px rgba(7,89,199,.075), 0 12px 30px rgba(18,34,61,.13);
+}
+.contact-email-toast {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 5px);
+  transition: opacity 320ms ease, transform 320ms ease, visibility 320ms ease;
+}
+.contact-email-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-email-pill, .contact-email-toast {
+    transition-duration: 0.01ms !important;
   }
 }
